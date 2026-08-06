@@ -1,4 +1,3 @@
-İşte Telegram entegrasyonunu, kendi alan adınla sınırsız e-posta adresi oluşturma numarasını ve projenin dikkat çekici taraflarını öne çıkaran, GitHub reposu için fazlasıyla ilgi çekici İngilizce README.md:
 # 🚀 Unlimited Custom Email Generator & Telegram Forwarder
 
 Turn your personal domain into an **infinite temporary/custom email generator**! 
