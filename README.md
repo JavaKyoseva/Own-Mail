@@ -21,9 +21,8 @@ Includes a lightweight web interface (`index.html`) and powered by Cloudflare Wo
 ## 📁 Repository Structure
 
 
-├── worker.js          # Core engine (Email listener & Telegram dispatch)
-├── index.html         # Web frontend / Dashboard
-├── .gitignore         # Untracked files list
+├── worker.js          # Core engine
+├── index.html         # Web frontend
 └── README.md          # Documentation
 
 ---
@@ -37,7 +36,6 @@ Before deploying, you **MUST** configure your Telegram Bot credentials inside `w
    - Replace `YOUR_TELEGRAM_BOT_TOKEN` with your bot token from [@BotFather](https://t.me/BotFather).
    - Replace `YOUR_TELEGRAM_CHAT_ID` with your numeric Chat ID (get it from [@userinfobot](https://t.me/userinfobot)).
 
-```javascript
 // Credentials in worker.js
 const BOT_TOKEN = "123456789:ABCdefGHIjklMNOpqrsTUVwxyZ";
 const CHAT_ID = "987654321";
@@ -57,8 +55,8 @@ Option A: Direct Web Dashboard (Fastest)
  * Click Save and Deploy.
 Option B: Via Termux / Terminal (Wrangler CLI)
  * Clone this repository:
-   git clone [https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git](https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git)
-cd YOUR_REPO_NAME
+   git clone https://github.com/JavaKyoseva/Own-Mail.git
+cd Own-Mail
 
  * Log in and deploy:
    npx wrangler login
