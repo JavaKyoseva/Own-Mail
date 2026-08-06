@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catch-All Mail Service</title>
+    <!-- Google Fonts & FontAwesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- QRCodeJS Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #6366f1;
+            --accent-hover: #4f46e5;
+            --badge-bg: rgba(99, 102, 241, 0.15);
+            --badge-text: #818cf8;
+            --input-bg: rgba(15, 23, 42, 0.6);
+            --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="light"] {
+            --bg-gradient: linear-gradient(135deg, #f1f5f9 0%, #e0e7ff 100%);
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --card-border: rgba(226, 232, 240, 0.8);
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --accent: #4f46e5;
+            --accent-hover: #4338ca;
+            --badge-bg: rgba(79, 70, 229, 0.1);
+            --badge-text: #4f46e5;
+            --input-bg: rgba(248, 250, 252, 0.9);
+            --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            overflow-x: hidden;
+        }
+
+        /* Top Header & Controls */
+        .header {
+            width: 100%;
+            max-width: 680px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #10b981;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #10b981;
+        }
+
+        .icon-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            height: 38px;
+            padding: 0 12px;
+            border-radius: 999px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            font-family: inherit;
+        }
+
+        .icon-btn:hover {
+            transform: scale(1.03);
+        }
+
+        /* Main Container */
+        .container {
+            width: 100%;
+            max-width: 680px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 24px 28px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(16px);
+            margin: auto 0;
+        }
+
+        .title-area {
+            text-align: center;
+            margin-bottom: 18px;
+        }
+
+        .title-area h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .title-area p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .notice-tag {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: var(--badge-bg);
+            color: var(--badge-text);
+            padding: 8px 14px;
+            border-radius: 12px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            margin-bottom: 18px;
+        }
+
+        /* Generator Box */
+        .generator-box {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            background: var(--input-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 4px 6px 4px 14px;
+        }
+
+        .input-group input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            width: 100%;
+            font-family: inherit;
+        }
+
+        .domain-suffix {
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            padding-right: 8px;
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .btn {
+            padding: 10px 14px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+            border: 1px solid var(--card-border);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* FAQ Accordion */
+        .faq-section {
+            border-top: 1px solid var(--card-border);
+            padding-top: 14px;
+        }
+
+        .faq-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        .faq-item {
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            margin-bottom: 6px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.02);
+            font-size: 0.83rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-answer {
+            padding: 0 14px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 100px;
+            padding: 10px 14px;
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        /* Footer & Links Area */
+        .footer-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            margin-top: 12px;
+        }
+        
+        .link-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+            max-width: 280px;
+        }
+
+
+        .link-buttons .sub-btn {
+            justify-content: center;
+            width: 100%;
+        }
+
+
+        .sub-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: white;
+            text-decoration: none;
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+
+        .sub-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .telegram-btn {
+            background: #24a1de;
+            box-shadow: 0 4px 10px rgba(36, 161, 222, 0.25);
+            animation: pulse 2s infinite;
+        }
+
+        .telegram-btn:hover { background: #208ecc; }
+
+        .github-btn {
+            background: #24292e;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .github-btn:hover { background: #1b1f23; }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(36, 161, 222, 0.4); }
+            70% { box-shadow: 0 0 0 8px rgba(36, 161, 222, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(36, 161, 222, 0); }
+        }
+
+        .credits {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #10b981;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 99px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+            z-index: 100;
+        }
+
+        .toast.show { transform: translateX(-50%) translateY(0); }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 20px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 280px;
+            box-shadow: var(--shadow);
+        }
+
+        #qrcode {
+            margin: 14px auto;
+            padding: 8px;
+            background: white;
+            border-radius: 12px;
+            width: fit-content;
+        }
+
+        .close-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        /* Desktop Adjustments */
+        @media (min-width: 768px) {
+            body { padding: 24px; }
+            .container { padding: 32px 36px; }
+            .title-area h1 { font-size: 1.85rem; }
+            .action-grid { grid-template-columns: repeat(4, 1fr); }
+            .generator-box { gap: 14px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header & Controls -->
+    <div class="header">
+        <div class="status-badge">
+            <span class="status-dot"></span>
+            <span id="txt-status">Mail Servisi Aktif</span>
+        </div>
+        <div class="controls">
+            <button class="icon-btn" id="langToggle" onclick="toggleLanguage()" aria-label="Dil Değiştir">
+                <i class="fa-solid fa-globe"></i>
+                <span id="langDisplay">TR</span>
+            </button>
+            <button class="icon-btn" id="themeToggle" aria-label="Tema Değiştir">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <div class="title-area">
+            <h1 id="txt-title">Catch-All E-Posta Servisi</h1>
+            <p id="txt-desc">Bu domaine gönderilen tüm mailler anında Telegram'a iletilir.</p>
+        </div>
+
+        <div class="notice-tag">
+            <i class="fa-solid fa-circle-info"></i>
+            <span id="txt-notice">Sadece Mail Alma Desteklidir (Mail Gönderilemez)</span>
+        </div>
+
+        <div class="generator-box">
+            <div class="input-group">
+                <input type="text" id="mailInput" value="abc" placeholder="kullanici-adi">
+                <span class="domain-suffix" id="domainDisplay">@loading...</span>
+            </div>
+
+            <div class="action-grid">
+                <button class="btn btn-primary" onclick="copyMail()">
+                    <i class="fa-regular fa-copy"></i> <span id="btn-copy">Kopyala</span>
+                </button>
+                <button class="btn btn-secondary" onclick="generateRandom()">
+                    <i class="fa-solid fa-shuffle"></i> <span id="btn-random">Rastgele</span>
+                </button>
+                <button class="btn btn-secondary" onclick="openMailClient()">
+                    <i class="fa-regular fa-paper-plane"></i> <span id="btn-send">Mail At</span>
+                </button>
+                <button class="btn btn-secondary" onclick="showQR()">
+                    <i class="fa-solid fa-qrcode"></i> <span id="btn-qr">QR Kod</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="faq-section">
+            <div class="faq-title" id="txt-faq-title">Sıkça Sorulan Sorular</div>
+            
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-question">
+                    <span id="txt-faq1-q">Hangi mail adresini yazmalıyım?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer" id="txt-faq1-a">
+                    Domainimizin sonuna istediğiniz kelimeyi yazabilirsiniz. Sistem "catch-all" olduğu için adrese ne yazarsanız yazın mailler size ulaşır.
+                </div>
+            </div>
+
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-question">
+                    <span id="txt-faq2-q">Gönderdiğim maillere yanıt alabilir miyim?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer" id="txt-faq2-a">
+                    Hayır, bu sistem sadece gelen mailleri Telegram üzerinden okumamızı sağlar. Dışarıya mail gönderme yeteneği yoktur.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer & Link Buttons -->
+    <div class="footer-area">
+        <div class="link-buttons">
+            <!-- Değiştirilebilir Telegram Linki -->
+            <a href="https://t.me/telegram_kullanici_adiniz" target="_blank" class="sub-btn telegram-btn">
+                <i class="fa-brands fa-telegram"></i>
+                <span id="txt-tg-btn">Telegram'dan iletişime geç</span>
+            </a>
+            <!-- Değiştirilebilir GitHub Proje Linki -->
+            <a href="https://github.com/kullanici_adiniz/proje_adi" target="_blank" class="sub-btn github-btn">
+                <i class="fa-brands fa-github"></i>
+                <span id="txt-gh-btn">GitHub Projesi</span>
+            </a>
+        </div>
+        <div class="credits">Made it by JavaKyoseva</div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">Mail adresi panoya kopyalandı!</div>
+
+    <!-- QR Modal -->
+    <div id="qrModal" class="modal">
+        <div class="modal-content">
+            <h3 id="txt-qr-title">Mail QR Kodu</h3>
+            <div id="qrcode"></div>
+            <button class="close-btn" onclick="closeQR()" id="btn-qr-close">Kapat</button>
+        </div>
+    </div>
+
+    <script>
+        // 1. Dinamik Domain Algılama
+        let currentDomain = window.location.hostname;
+        if (currentDomain === '127.0.0.1' || currentDomain === 'localhost' || currentDomain === '') {
+            currentDomain = 'yusufkose.dpdns.org';
+        }
+        document.getElementById('domainDisplay').textContent = '@' + currentDomain;
+
+        function getFullMail() {
+            const prefix = document.getElementById('mailInput').value.trim() || 'abc';
+            return `${prefix}@${currentDomain}`;
+        }
+
+        // 2. Dil Desteği (TR / EN)
+        const i18n = {
+            tr: {
+                status: "Mail Servisi Aktif",
+                title: "Catch-All E-Posta Servisi",
+                desc: "Bu domaine gönderilen tüm mailler anında Telegram'a iletilir.",
+                notice: "Sadece Mail Alma Desteklidir (Mail Gönderilemez)",
+                btnCopy: "Kopyala",
+                btnRandom: "Rastgele",
+                btnSend: "Mail At",
+                btnQr: "QR Kod",
+                faqTitle: "Sıkça Sorulan Sorular",
+                faq1Q: "Hangi mail adresini yazmalıyım?",
+                faq1A: "Domainimizin sonuna istediğiniz kelimeyi yazabilirsiniz. Sistem 'catch-all' olduğu için adrese ne yazarsanız yazın mailler bize ulaşır.",
+                faq2Q: "Gönderdiğim maillere yanıt alabilir miyim?",
+                faq2A: "Hayır, bu sistem sadece gelen mailleri Telegram üzerinden okumamızı sağlar. Dışarıya mail gönderme yeteneği yoktur.",
+                tgBtn: "Telegram'dan iletişime geç",
+                ghBtn: "GitHub Projesi",
+                toastCopy: "Mail adresi panoya kopyalandı!",
+                toastRandom: "Yeni adres üretildi!",
+                qrTitle: "Mail QR Kodu",
+                qrClose: "Kapat"
+            },
+            en: {
+                status: "Mail Service Active",
+                title: "Catch-All Email Service",
+                desc: "All emails sent to this domain are instantly forwarded to Telegram.",
+                notice: "Receive Only (Cannot Send Emails)",
+                btnCopy: "Copy",
+                btnRandom: "Random",
+                btnSend: "Send Mail",
+                btnQr: "QR Code",
+                faqTitle: "Frequently Asked Questions",
+                faq1Q: "Which email address should I write?",
+                faq1A: "You can write any word before the domain. Since the system is 'catch-all', emails sent to any prefix will reach you.",
+                faq2Q: "Can I receive replies to my emails?",
+                faq2A: "No, this system only allows us to read incoming emails via Telegram. Outgoing emails are not supported.",
+                tgBtn: "Contact via Telegram",
+                ghBtn: "GitHub Project",
+                toastCopy: "Email address copied to clipboard!",
+                toastRandom: "New address generated!",
+                qrTitle: "Mail QR Code",
+                qrClose: "Close"
+            }
+        };
+
+        // Algıla veya saklanan dili getir
+        const browserLang = navigator.language.startsWith('tr') ? 'tr' : 'en';
+        let currentLang = localStorage.getItem('lang') || browserLang;
+
+        function applyLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('lang', lang);
+            document.getElementById('langDisplay').textContent = lang === 'tr' ? 'TR' : 'EN';
+            
+            const data = i18n[lang];
+            document.getElementById('txt-status').textContent = data.status;
+            document.getElementById('txt-title').textContent = data.title;
+            document.getElementById('txt-desc').textContent = data.desc;
+            document.getElementById('txt-notice').textContent = data.notice;
+            document.getElementById('btn-copy').textContent = data.btnCopy;
+            document.getElementById('btn-random').textContent = data.btnRandom;
+            document.getElementById('btn-send').textContent = data.btnSend;
+            document.getElementById('btn-qr').textContent = data.btnQr;
+            document.getElementById('txt-faq-title').textContent = data.faqTitle;
+            document.getElementById('txt-faq1-q').textContent = data.faq1Q;
+            document.getElementById('txt-faq1-a').textContent = data.faq1A;
+            document.getElementById('txt-faq2-q').textContent = data.faq2Q;
+            document.getElementById('txt-faq2-a').textContent = data.faq2A;
+            document.getElementById('txt-tg-btn').textContent = data.tgBtn;
+            document.getElementById('txt-gh-btn').textContent = data.ghBtn;
+            document.getElementById('txt-qr-title').textContent = data.qrTitle;
+            document.getElementById('btn-qr-close').textContent = data.qrClose;
+        }
+
+        function toggleLanguage() {
+            applyLanguage(currentLang === 'tr' ? 'en' : 'tr');
+        }
+
+        // Başlangıçta dili uygula
+        applyLanguage(currentLang);
+
+        // 3. Kopyalama & Toast
+        function copyMail() {
+            const fullMail = getFullMail();
+            navigator.clipboard.writeText(fullMail).then(() => {
+                showToast(i18n[currentLang].toastCopy);
+            });
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 2500);
+        }
+
+        // 4. Rastgele Üretici
+        function generateRandom() {
+            const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+            let result = 'temp_';
+            for (let i = 0; i < 5; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            document.getElementById('mailInput').value = result;
+            showToast(i18n[currentLang].toastRandom);
+        }
+
+        // 5. Mailto Client
+        function openMailClient() {
+            window.location.href = `mailto:${getFullMail()}`;
+        }
+
+        // 6. QR Modal
+        function showQR() {
+            const qrContainer = document.getElementById("qrcode");
+            qrContainer.innerHTML = "";
+            new QRCode(qrContainer, {
+                text: getFullMail(),
+                width: 128,
+                height: 128
+            });
+            document.getElementById("qrModal").style.display = "flex";
+        }
+
+        function closeQR() {
+            document.getElementById("qrModal").style.display = "none";
+        }
+
+        // 7. Akordeon
+        function toggleFaq(element) {
+            element.classList.toggle('active');
+        }
+
+        // 8. Tema (Dark/Light)
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const themeIcon = themeToggleBtn.querySelector('i');
+        const savedTheme = localStorage.getItem('theme');
+        const systemPrefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+
+        if (savedTheme === 'light' || (!savedTheme && systemPrefersLight)) {
+            document.documentElement.setAttribute('data-theme', 'light');
+            themeIcon.className = 'fa-solid fa-sun';
+        } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            themeIcon.className = 'fa-solid fa-moon';
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            let newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            themeIcon.className = newTheme === 'light' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+    </script>
+</body>
+</html>
