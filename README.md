@@ -6,7 +6,9 @@ This serverless project lets you create **unlimited email addresses on the fly**
 Any incoming mail sent to your domain is automatically captured, parsed, and pushed straight to your **Telegram inbox in real time**. 
 
 Includes a lightweight web interface (`index.html`) and powered by Cloudflare Workers.
+
  [![Website](https://img.shields.io/badge/Live-Demo-00FFC8?style=for-the-badge&logo=website&logoColor=white)](https://domainetta.netlify.app)
+
 ---
 
 ## 🔥 Why Is This Awesome?
