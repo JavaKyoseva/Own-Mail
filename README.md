@@ -27,6 +27,7 @@ Before deploying, you **MUST** configure your Telegram Bot credentials inside `w
 
  2. Locate the configuration variables at the top:
 
+   - Replace 'https://domainetta.netlify.app' with your website link
    - Replace `YOUR_TELEGRAM_BOT_TOKEN` with your bot token from https://t.me/BotFather
    - Replace `YOUR_TELEGRAM_CHAT_ID` with your numeric Chat ID (get it from https://t.me/userinfobot)
 
