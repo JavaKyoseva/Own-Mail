@@ -2,7 +2,8 @@
 
 Turn your personal domain into an **infinite temporary/custom email generator**! 
 
-This serverless project lets you create **unlimited email addresses on the fly** (e.g., `netflix@yourdomain.com`, `anything@yourdomain.com`) without setup. Any incoming mail sent to your domain is automatically captured, parsed, and pushed straight to your **Telegram inbox in real time**. 
+This serverless project lets you create **unlimited email addresses on the fly** (e.g., `netflix@yourdomain.com`, `anything@yourdomain.com`) without setup.
+Any incoming mail sent to your domain is automatically captured, parsed, and pushed straight to your **Telegram inbox in real time**. 
 
 Includes a lightweight web interface (`index.html`) and powered by Cloudflare Workers.
 
@@ -32,12 +33,14 @@ Includes a lightweight web interface (`index.html`) and powered by Cloudflare Wo
 Before deploying, you **MUST** configure your Telegram Bot credentials inside `worker.js`:
 
 1. Open `worker.js`.
-2. Locate the configuration variables at the top:
-   - Replace `YOUR_TELEGRAM_BOT_TOKEN` with your bot token from [@BotFather](https://t.me/BotFather).
-   - Replace `YOUR_TELEGRAM_CHAT_ID` with your numeric Chat ID (get it from [@userinfobot](https://t.me/userinfobot)).
 
-// Credentials in worker.js
+2. Locate the configuration variables at the top:
+
+   - Replace `YOUR_TELEGRAM_BOT_TOKEN` with your bot token from https://t.me/BotFather
+   - Replace `YOUR_TELEGRAM_CHAT_ID` with your numeric Chat ID (get it from https://t.me/userinfobot)
+
 const BOT_TOKEN = "123456789:ABCdefGHIjklMNOpqrsTUVwxyZ";
+
 const CHAT_ID = "987654321";
 
 🚀 Step-by-Step Setup
@@ -48,6 +51,7 @@ const CHAT_ID = "987654321";
    * Set Action -> Send to a Worker.
    * Select your deployed Worker as the target.
      (Now literally any email ending in @yourdomain.com will trigger your Worker!)
+
 2. Deploy Code
 Option A: Direct Web Dashboard (Fastest)
  * Go to Workers & Pages -> Create Application -> Create Worker.
@@ -66,6 +70,7 @@ npx wrangler deploy worker.js --name custom-email-worker
  * Send a test email from Gmail or Outlook to ANY random address under your domain (e.g., random123@yourdomain.com).
  * Open Telegram — your bot will instantly ping you with the full email payload!
  * Visit your Worker URL in a browser to check out the index.html web page.
+
 📄 License
 Released under the MIT License. Feel free to fork and customize!
 
