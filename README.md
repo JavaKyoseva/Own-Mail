@@ -17,17 +17,6 @@ Includes a lightweight web interface (`index.html`) and powered by Cloudflare Wo
 - 🌐 **Built-in Web Interface:** Includes `index.html` for status monitoring or custom frontend integrations.
 - ⚡ **100% Free & Serverless:** Zero hosting cost, powered entirely by Cloudflare's free edge network.
 
----
-
-## 📁 Repository Structure
-
-
-├── worker.js          # Core engine
-├── index.html         # Web frontend
-└── README.md          # Documentation
-
----
-
 ## ⚠️ Required Configuration
 
 Before deploying, you **MUST** configure your Telegram Bot credentials inside `worker.js`:
@@ -38,10 +27,6 @@ Before deploying, you **MUST** configure your Telegram Bot credentials inside `w
 
    - Replace `YOUR_TELEGRAM_BOT_TOKEN` with your bot token from https://t.me/BotFather
    - Replace `YOUR_TELEGRAM_CHAT_ID` with your numeric Chat ID (get it from https://t.me/userinfobot)
-
-const BOT_TOKEN = "123456789:ABCdefGHIjklMNOpqrsTUVwxyZ";
-
-const CHAT_ID = "987654321";
 
 🚀 Step-by-Step Setup
 1. Enable Unlimited Catch-All Emails
