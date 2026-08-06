@@ -21,15 +21,15 @@ Includes a lightweight web interface (`index.html`) and powered by Cloudflare Wo
 
 Before deploying, you **MUST** configure your Telegram Bot credentials inside `worker.js`:
 
-### 1. Open `worker.js`.
+ 1. Open `worker.js`.
 
-### 2. Locate the configuration variables at the top:
+ 2. Locate the configuration variables at the top:
 
    - Replace `YOUR_TELEGRAM_BOT_TOKEN` with your bot token from https://t.me/BotFather
    - Replace `YOUR_TELEGRAM_CHAT_ID` with your numeric Chat ID (get it from https://t.me/userinfobot)
 
 ## 🚀 Step-by-Step Setup
-1. Enable Unlimited Catch-All Emails
+    ### 1. Enable Unlimited Catch-All Emails
  * Log in to your Cloudflare Dashboard and select your domain.
  * Go to Email -> Email Routing and hit Enable (Cloudflare will auto-configure MX/SPF records).
  * Go to the Routes tab and activate Catch-all address:
@@ -37,7 +37,7 @@ Before deploying, you **MUST** configure your Telegram Bot credentials inside `w
    * Select your deployed Worker as the target.
      (Now literally any email ending in @yourdomain.com will trigger your Worker!)
 
-2. Deploy Code
+    ### 2. Deploy Code
 
 Option A: Direct Web Dashboard (Fastest)
  * Go to Workers & Pages -> Create Application -> Create Worker.
