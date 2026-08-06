@@ -29,7 +29,7 @@ Before deploying, you **MUST** configure your Telegram Bot credentials inside `w
    - Replace `YOUR_TELEGRAM_CHAT_ID` with your numeric Chat ID (get it from https://t.me/userinfobot)
 
 ## 🚀 Step-by-Step Setup
-1. Enable Unlimited Catch-All Emails
+ 1. Enable Unlimited Catch-All Emails
  * Log in to your Cloudflare Dashboard and select your domain.
  * Go to Email -> Email Routing and hit Enable (Cloudflare will auto-configure MX/SPF records).
  * Go to the Routes tab and activate Catch-all address:
