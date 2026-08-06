@@ -21,9 +21,9 @@ Includes a lightweight web interface (`index.html`) and powered by Cloudflare Wo
 
 Before deploying, you **MUST** configure your Telegram Bot credentials inside `worker.js`:
 
-1. Open `worker.js`.
+### 1. Open `worker.js`.
 
-2. Locate the configuration variables at the top:
+### 2. Locate the configuration variables at the top:
 
    - Replace `YOUR_TELEGRAM_BOT_TOKEN` with your bot token from https://t.me/BotFather
    - Replace `YOUR_TELEGRAM_CHAT_ID` with your numeric Chat ID (get it from https://t.me/userinfobot)
