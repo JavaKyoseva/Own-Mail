@@ -42,6 +42,7 @@ Option A: Direct Web Dashboard (Fastest)
  * Go to Workers & Pages -> Create Application -> Create Worker.
  * Paste worker.js (with your Bot credentials) into the online editor.
  * Click Save and Deploy.
+
 Option B: Via Termux / Terminal (Wrangler CLI)
  * Clone this repository:
    git clone https://github.com/JavaKyoseva/Own-Mail.git
