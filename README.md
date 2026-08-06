@@ -38,6 +38,7 @@ Before deploying, you **MUST** configure your Telegram Bot credentials inside `w
      (Now literally any email ending in @yourdomain.com will trigger your Worker!)
 
 2. Deploy Code
+
 Option A: Direct Web Dashboard (Fastest)
  * Go to Workers & Pages -> Create Application -> Create Worker.
  * Paste worker.js (with your Bot credentials) into the online editor.
