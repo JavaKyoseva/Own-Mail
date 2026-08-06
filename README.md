@@ -28,7 +28,7 @@ Before deploying, you **MUST** configure your Telegram Bot credentials inside `w
    - Replace `YOUR_TELEGRAM_BOT_TOKEN` with your bot token from https://t.me/BotFather
    - Replace `YOUR_TELEGRAM_CHAT_ID` with your numeric Chat ID (get it from https://t.me/userinfobot)
 
-🚀 Step-by-Step Setup
+## 🚀 Step-by-Step Setup
 1. Enable Unlimited Catch-All Emails
  * Log in to your Cloudflare Dashboard and select your domain.
  * Go to Email -> Email Routing and hit Enable (Cloudflare will auto-configure MX/SPF records).
@@ -51,11 +51,11 @@ cd Own-Mail
    npx wrangler login
 npx wrangler deploy worker.js --name custom-email-worker
 
-🧪 Quick Test
+## 🧪 Quick Test
  * Send a test email from Gmail or Outlook to ANY random address under your domain (e.g., random123@yourdomain.com).
  * Open Telegram — your bot will instantly ping you with the full email payload!
  * Visit your Worker URL in a browser to check out the index.html web page.
 
-📄 License
+## 📄 License
 Released under the MIT License. Feel free to fork and customize!
 
