@@ -7,6 +7,7 @@ Any incoming mail sent to your domain is automatically captured, parsed, and pus
 
 Includes a lightweight web interface (`index.html`) and powered by Cloudflare Workers.
 
+You can test it this website [![Website](https://img.shields.io/badge/Web_Siteme_Git-2ea44f?style=for-the-badge&logo=github&logoColor=white)](https://domainetta.netlify.app)
 ---
 
 ## 🔥 Why Is This Awesome?
