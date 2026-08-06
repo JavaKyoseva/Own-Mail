@@ -1,72 +1,74 @@
-# ✉️ Cloudflare Email to Telegram Forwarder
+İşte Telegram entegrasyonunu, kendi alan adınla sınırsız e-posta adresi oluşturma numarasını ve projenin dikkat çekici taraflarını öne çıkaran, GitHub reposu için fazlasıyla ilgi çekici İngilizce README.md:
+# 🚀 Unlimited Custom Email Generator & Telegram Forwarder
 
-A serverless project built on Cloudflare Workers and Email Routing that intercepts incoming emails, parses their content (sender, subject, body), and instantly forwards them directly to your **Telegram Chat/Group** via a Telegram Bot. It also includes an `index.html` web interface for status checks or custom routing.
+Turn your personal domain into an **infinite temporary/custom email generator**! 
+
+This serverless project lets you create **unlimited email addresses on the fly** (e.g., `netflix@yourdomain.com`, `anything@yourdomain.com`) without setup. Any incoming mail sent to your domain is automatically captured, parsed, and pushed straight to your **Telegram inbox in real time**. 
+
+Includes a lightweight web interface (`index.html`) and powered by Cloudflare Workers.
 
 ---
 
-## 📌 Features
+## 🔥 Why Is This Awesome?
 
-- **Automated Email Parsing:** Extracts `From`, `Subject`, and `Body` from all incoming emails.
-- **Telegram Notification System:** Sends real-time email alerts straight to your Telegram via Telegram Bot API.
-- **Web Interface (`index.html`):** Lightweight web page integration for frontend interactions or service monitoring.
-- **Zero Hosting Cost:** Runs entirely on Cloudflare's free Worker and Email Routing quotas.
+- ♾️ **Unlimited Custom Emails:** No need to create accounts. Use any address like `spotify@yourdomain.com` or `spam-test@yourdomain.com` instantly.
+- 📬 **Instant Telegram Alerts:** Recieve all emails directly inside Telegram with sender, subject, and content fully parsed.
+- 🛡️ **Privacy & Spam Protection:** Never leak your primary email address to sketchy websites again.
+- 🌐 **Built-in Web Interface:** Includes `index.html` for status monitoring or custom frontend integrations.
+- ⚡ **100% Free & Serverless:** Zero hosting cost, powered entirely by Cloudflare's free edge network.
 
 ---
 
 ## 📁 Repository Structure
 
 
-├── worker.js          # Main Cloudflare Worker script (Email listener & Telegram dispatch)
-├── index.html         # Web frontend / landing interface
+├── worker.js          # Core engine (Email listener & Telegram dispatch)
+├── index.html         # Web frontend / Dashboard
 ├── .gitignore         # Untracked files list
-└── README.md          # Project documentation
+└── README.md          # Documentation
 
 ---
 
-## ⚠️ Configuration (IMPORTANT)
+## ⚠️ Required Configuration
 
-Before deploying, you **MUST** update your credentials in `worker.js`:
+Before deploying, you **MUST** configure your Telegram Bot credentials inside `worker.js`:
 
 1. Open `worker.js`.
-2. Locate the configuration variables at the top of the file:
-   - Replace `YOUR_TELEGRAM_BOT_TOKEN` with your actual Bot Token from [@BotFather](https://t.me/BotFather).
-   - Replace `YOUR_TELEGRAM_CHAT_ID` with your numeric Chat ID (you can get this from [@userinfobot](https://t.me/userinfobot)).
+2. Locate the configuration variables at the top:
+   - Replace `YOUR_TELEGRAM_BOT_TOKEN` with your bot token from [@BotFather](https://t.me/BotFather).
+   - Replace `YOUR_TELEGRAM_CHAT_ID` with your numeric Chat ID (get it from [@userinfobot](https://t.me/userinfobot)).
 
 ```javascript
-// Example in worker.js
+// Credentials in worker.js
 const BOT_TOKEN = "123456789:ABCdefGHIjklMNOpqrsTUVwxyZ";
 const CHAT_ID = "987654321";
 
-🚀 Setup & Deployment Guide
-Step 1: Configure Cloudflare Email Routing
+🚀 Step-by-Step Setup
+1. Enable Unlimited Catch-All Emails
  * Log in to your Cloudflare Dashboard and select your domain.
- * Go to Email -> Email Routing and enable the service (let Cloudflare automatically set up the required MX/SPF DNS records).
- * Under the Routes tab:
-   * Set up a custom rule or enable Catch-all address.
-   * Set Action to Send to a Worker.
-   * Select your deployed Worker as the destination.
-Step 2: Deploy to Cloudflare Workers
-Method A: Cloudflare Web Dashboard (Quickest)
+ * Go to Email -> Email Routing and hit Enable (Cloudflare will auto-configure MX/SPF records).
+ * Go to the Routes tab and activate Catch-all address:
+   * Set Action -> Send to a Worker.
+   * Select your deployed Worker as the target.
+     (Now literally any email ending in @yourdomain.com will trigger your Worker!)
+2. Deploy Code
+Option A: Direct Web Dashboard (Fastest)
  * Go to Workers & Pages -> Create Application -> Create Worker.
- * Paste the contents of worker.js into the online editor (make sure to update your BOT_TOKEN and CHAT_ID).
+ * Paste worker.js (with your Bot credentials) into the online editor.
  * Click Save and Deploy.
-Method B: Via Termux / Command Line (Wrangler CLI)
- * Clone this repository to your device or Termux environment:
+Option B: Via Termux / Terminal (Wrangler CLI)
+ * Clone this repository:
    git clone [https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git](https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git)
 cd YOUR_REPO_NAME
 
- * Authenticate Wrangler with Cloudflare:
+ * Log in and deploy:
    npx wrangler login
+npx wrangler deploy worker.js --name custom-email-worker
 
- * Deploy the project:
-   npx wrangler deploy worker.js --name cf-email-telegram-worker
-
-🧪 How to Test
- * Send an email from any external email provider (Gmail, Outlook, etc.) to your Cloudflare domain address (e.g., info@yourdomain.com).
- * Check your Telegram chat. The bot will deliver a formatted message containing the email details immediately.
- * Open your Worker's deployed domain URL in a web browser to view the index.html interface.
-
+🧪 Quick Test
+ * Send a test email from Gmail or Outlook to ANY random address under your domain (e.g., random123@yourdomain.com).
+ * Open Telegram — your bot will instantly ping you with the full email payload!
+ * Visit your Worker URL in a browser to check out the index.html web page.
 📄 License
-This project is open-source and available under the MIT License.
-
+Released under the MIT License. Feel free to fork and customize!
 
