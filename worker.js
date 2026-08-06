@@ -8,8 +8,8 @@ export default {
   },
 
   async email(message, env, ctx) {
-    const TELEGRAM_TOKEN = "8858269442:AAFZP2Yg2C4oa1waVhQwzvB6Ss8TopjXlJk";
-    const CHAT_ID = "6154986673";
+    const TELEGRAM_TOKEN = "BOT_TOKEN";
+    const CHAT_ID = "CHAT_ID";
 
     try {
       const from = message.from;
@@ -32,16 +32,16 @@ export default {
       let summaryText = bodyText.substring(0, 700);
       if (bodyText.length > 700) summaryText += "...";
 
-      let telegramMessage = `📬 *YENİ E-POSTA GELDI!*\n\n` +
-                            `👤 *Kimden:* \`${from}\`\n` +
-                            `🎯 *Kime:* \`${to}\`\n` +
-                            `📌 *Konu:* ${subject}\n\n`;
+      let telegramMessage = `📬 *NEW MAIL!*\n\n` +
+                            `👤 *FROM:* \`${from}\`\n` +
+                            `🎯 *TO:* \`${to}\`\n` +
+                            `📌 *SUBJECT:* ${subject}\n\n`;
 
       if (extractedCode) {
-        telegramMessage += `🔑 *TESPİT EDİLEN DOĞRULAMA KODU:*\n\`${extractedCode}\`\n\n`;
+        telegramMessage += `🔑 *Extracted OTP:*\n\`${extractedCode}\`\n\n`;
       }
 
-      telegramMessage += `📝 *Mesaj Özeti:*\n\`\`\`\n${summaryText}\n\`\`\``;
+      telegramMessage += `📝 *Summary Text:*\n\`\`\`\n${summaryText}\n\`\`\``;
 
       const url = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`;
       await fetch(url, {
